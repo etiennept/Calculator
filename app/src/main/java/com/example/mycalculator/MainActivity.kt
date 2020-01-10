@@ -11,13 +11,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-
-    var number = 0.0
-    var run = Runtime()
-
-    var neg = true
-    var p = 0
-    var textValue  =  ""
+    private var number = ""
+    private var neg = true
+    private var p = 0
+    private var textValue  =  ""
 
 
 
@@ -39,10 +36,10 @@ class MainActivity : AppCompatActivity() {
         val button0: Button = findViewById(R.id.button0)
         val buttonPoint: Button  = findViewById(R.id.buttonPoint)
         val buttonNew : Button = findViewById(R.id.buttonNew)
-        val buttonplus : Button  = findViewById(R.id.buttonPlus)
-        val buttonminux : Button = findViewById(R.id.buttonMinus)
-        val buttontimes  : Button = findViewById(R.id.buttonTimes)
-        val buttondiv : Button = findViewById(R.id.buttonDiv)
+        val buttonPlus : Button  = findViewById(R.id.buttonPlus)
+        val buttonMinux : Button = findViewById(R.id.buttonMinus)
+        val buttonTimes  : Button = findViewById(R.id.buttonTimes)
+        val buttonDiv : Button = findViewById(R.id.buttonDiv)
         val textValueView  : TextView = findViewById(R.id.value)
         val textResultView : TextView = findViewById( R.id.result)
 
@@ -50,28 +47,23 @@ class MainActivity : AppCompatActivity() {
             textValue+=b
             textValueView.setText(textValue)
         }
-
-        fun number( x : Short ){
-            valueView(x.toString())
-            if(p == 0){
-                number *= 10.0
-                number += x.toDouble()
-            }
-            else{
-                number+= x.toDouble()/p
-                p*=10
-            }
-
-            var a = run.number(number)
-            var b =  a.toString()
-            textResultView.setText(b)
+        fun addNumber ( x :String){
+            number+x
+            val z = x.toDouble()
+            number = z.toString()
+            valueView(number)
+            val a = number(z)
+            textResultView.setText(a.toString())
         }
 
-        fun operator(  x  :String  ){
+        fun number( x : Int ){
+            addNumber(x.toString())
+
+        }
+        fun operator( x  :String ){
             valueView(x)
-            p = 0
-            run.op(x, number)
-            number = 0.0
+            op(x,number.toDouble() )
+
         }
 
 
@@ -103,27 +95,23 @@ class MainActivity : AppCompatActivity() {
             number(9)
         }
         button0.setOnClickListener {
-            if(number != 0.0 ){
-                number( 0)
-            }
-
+            number( 0)
         }
 
         buttonPoint.setOnClickListener {
-            if (p ==0 ){
-                valueView(".")
-                p = 10
-            }
+            addNumber(".")
+
+
         }
 
-        buttonplus.setOnClickListener {
-            if (number != 0.0){
+        buttonPlus.setOnClickListener {
+            if (number != ""){
                 operator("+")
             }
         }
 
-        buttonminux.setOnClickListener {
-            if (number == 0.0) {
+        buttonMinux.setOnClickListener {
+            if (number ==  "") {
                 if (neg) {
                     valueView("-")
                     neg = false
@@ -134,22 +122,22 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        buttontimes.setOnClickListener {
-            if( number !=  0.0){
+        buttonTimes.setOnClickListener {
+            if( number !=  ""){
             operator( "*" )
             neg = true
             }
         }
 
-        buttondiv.setOnClickListener {
-            if (number !=  0.0){
+        buttonDiv.setOnClickListener {
+            if (number !=  ""){
             operator("/")
             neg = true }
         }
 
         buttonNew.setOnClickListener {
-            number = 0.0
-            run = Runtime()
+            new()
+            number = ""
             neg = true
             p = 0
             textValue  = ""
@@ -175,6 +163,10 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
+
+
 }
 
 
